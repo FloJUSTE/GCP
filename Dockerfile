@@ -1,4 +1,4 @@
-FROM node:current-alpine3.15
+FROM node:buster
 
 RUN mkdir /node-red
 
