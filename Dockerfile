@@ -1,12 +1,12 @@
 FROM node:lts-alpine
 
-RUN mkdir /node-red
+RUN mkdir /node-red && mkdir ~/.node-red
 
 WORKDIR /node-red
 
 RUN npm install node-red --save
 
-COPY ./sources/package.json .
+COPY ./sources/package.json ~/.node-red/
 COPY ./sources/settings.js .
 COPY ./sources/flows.json .
 EXPOSE 1880
