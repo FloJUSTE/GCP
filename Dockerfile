@@ -1,9 +1,6 @@
-FROM node:current-alpine3.16
+FROM node:current-alpine3.15
 
 RUN mkdir /node-red
-
-WORKDIR /root/.node-red
-COPY ./sources/package.json .
 
 WORKDIR /node-red
 
