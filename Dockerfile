@@ -7,6 +7,7 @@ WORKDIR /node-red
 COPY ./sources/package.json .
 COPY ./sources/settings.js .
 COPY ./sources/flows.json .
+COPY ./sources/flows_cred.json .
 
 RUN npm install
 
