@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:current-alpine3.16
 
 RUN mkdir /node-red
 
