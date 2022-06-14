@@ -1,0 +1,223 @@
+[
+    {
+        "id": "822afc3b4aa00930",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ed21b80ecb317fc4",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3fde8374e4130cb4",
+        "type": "google-cloud-credentials",
+        "name": "key"
+    },
+    {
+        "id": "5e44b10826081357",
+        "type": "google-cloud-credentials",
+        "name": "control-admin-big-query"
+    },
+    {
+        "id": "35626b579bcba8ac",
+        "type": "inject",
+        "z": "822afc3b4aa00930",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 200,
+        "wires": [
+            [
+                "5874d40da676c97f"
+            ]
+        ]
+    },
+    {
+        "id": "5874d40da676c97f",
+        "type": "debug",
+        "z": "822afc3b4aa00930",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 290,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "a403f9d949c5935a",
+        "type": "http in",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "url": "/transport",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "833ee1ebfedadc60",
+                "7a99377bdef17749",
+                "228a324bb1c2a3a4",
+                "d04e8c32b3cb0bf0"
+            ]
+        ]
+    },
+    {
+        "id": "833ee1ebfedadc60",
+        "type": "template",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "This is the payload: {{payload}} !",
+        "output": "str",
+        "x": 320,
+        "y": 80,
+        "wires": [
+            [
+                "0efdd484f0cf8af4"
+            ]
+        ]
+    },
+    {
+        "id": "0efdd484f0cf8af4",
+        "type": "http response",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 490,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "7a99377bdef17749",
+        "type": "debug",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 330,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "a8ec8057a16094dc",
+        "type": "google-cloud-log",
+        "z": "ed21b80ecb317fc4",
+        "account": "3fde8374e4130cb4",
+        "keyFilename": "",
+        "projectId": "",
+        "logName": "compte-access-node-red",
+        "name": "",
+        "x": 490,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "228a324bb1c2a3a4",
+        "type": "function",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "func": "msg.payload = `User ${msg.req.query.clientid} at gate ${msg.req.query.gateid} @ ${Date.now()}`\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 300,
+        "wires": [
+            [
+                "a8ec8057a16094dc"
+            ]
+        ]
+    },
+    {
+        "id": "d04e8c32b3cb0bf0",
+        "type": "function",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "func": "// @ts-nocheck\nmsg.payload = {\n    clientid: +msg.req.query.clientid,\n    gateid: +msg.req.query.gateid,\n    timestamp: Date.now()\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 500,
+        "wires": [
+            [
+                "3d816825b7a41ba2"
+            ]
+        ]
+    },
+    {
+        "id": "3d816825b7a41ba2",
+        "type": "google-cloud-bigquery-insert",
+        "z": "ed21b80ecb317fc4",
+        "account": "5e44b10826081357",
+        "keyFilename": "",
+        "projectId": "hardy-ivy-353208",
+        "tableId": "traffic1",
+        "datasetId": "transport",
+        "name": "",
+        "x": 560,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0314b41bfb489b48",
+        "type": "debug",
+        "z": "ed21b80ecb317fc4",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 510,
+        "y": 720,
+        "wires": []
+    }
+]
