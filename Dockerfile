@@ -4,7 +4,7 @@ RUN mkdir /node-red
 
 WORKDIR /node-red
 
-RUN npm install node-red --save
+RUN npm install
 
 COPY ./sources/package.json .
 COPY ./sources/settings.js .
